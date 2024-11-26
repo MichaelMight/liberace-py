@@ -17,15 +17,19 @@ A production-ready FastAPI project template that helps you kickstart your Python
 - ⚡ Ready-to-use project structure
 - 🧪 Testing setup with pytest
 - 📝 Type hints throughout the codebase
+- 🗄️ Database support for both SQLite and PostgreSQL
+- 🔍 Comprehensive logging system
+- 📊 Domain-driven design patterns
 
 ## 🛠️ Tech Stack
 
 - [FastAPI](https://fastapi.tiangolo.com/): Modern web framework
-- [Pydantic](https://docs.pydantic.dev/): Data validation
-- [SQLAlchemy](https://www.sqlalchemy.org/): ORM
+- [Pydantic](https://docs.pydantic.dev/) V2: Data validation
+- [SQLAlchemy](https://www.sqlalchemy.org/) 2.0: ORM
 - [HTTPX](https://www.python-httpx.org/): Async HTTP client
 - [Poetry](https://python-poetry.org/): Dependency management
 - [Pytest](https://docs.pytest.org/): Testing framework
+- [Alembic](https://alembic.sqlalchemy.org/): Database migrations
 
 ## 🚀 Quick Start
 
@@ -52,7 +56,17 @@ poetry install
 cp .env.example .env
 ```
 
-4. Run the development server:
+4. Configure database (SQLite by default):
+```env
+# Use SQLite (default)
+DATABASE_TYPE=sqlite
+
+# Or use PostgreSQL
+# DATABASE_TYPE=postgresql
+# DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+```
+
+5. Run the development server:
 ```bash
 poetry run uvicorn main:app --reload
 ```
@@ -66,19 +80,22 @@ project_name/
 ├── pyproject.toml          # Dependencies and project metadata
 ├── README.md              # Project documentation
 ├── .env                   # Environment variables
+├── .github/              # GitHub Actions workflows
 ├── app/
 │   ├── api/              # API routes
 │   │   └── v1/
 │   │       └── endpoints/
 │   ├── core/             # Core configuration
-│   │   ├── config.py
-│   │   └── exceptions.py
-│   ├── models/           # Data models
-│   │   ├── base.py
-│   │   └── domain/
+│   │   ├── config.py     # Application configuration
+│   │   └── exceptions.py # Global exception handlers
+│   ├── models/           # Database models
+│   │   ├── base.py      # Base model class
+│   │   └── domain/      # Domain models
 │   ├── schemas/          # Pydantic schemas
 │   ├── services/         # Business logic
 │   └── utils/            # Utility functions
+│       ├── http.py      # HTTP client with retry
+│       └── logger.py    # Logging configuration
 ├── main.py               # Application entry point
 └── tests/               # Test suite
 ```
@@ -90,6 +107,11 @@ Run tests with pytest:
 poetry run pytest
 ```
 
+For coverage report:
+```bash
+poetry run pytest --cov=app tests/
+```
+
 ## 📝 Example Usage
 
 ```python
@@ -97,6 +119,7 @@ poetry run pytest
 from fastapi import APIRouter, Depends
 from app.services.example import ExampleService
 from app.schemas.api_models import ExampleRequest, ExampleResponse
+from app.utils.logger import logger
 
 router = APIRouter()
 
@@ -105,7 +128,28 @@ async def handle_example(
     request: ExampleRequest,
     service: ExampleService = Depends(ExampleService)
 ):
+    logger.info(f"Processing request: {request}")
     return await service.process(request)
+```
+
+## 🔧 Configuration
+
+The template supports various configuration options through environment variables:
+
+```env
+# Application
+APP_NAME=FastAPI Project
+DEBUG=True
+
+# Database
+DATABASE_TYPE=sqlite  # or postgresql
+DATABASE_URL=        # required for postgresql
+
+# Logging
+LOG_LEVEL=INFO
+
+# API
+API_V1_STR=/api/v1
 ```
 
 ## 🤝 Contributing
@@ -126,10 +170,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [FastAPI Best Practices](https://fastapi.tiangolo.com/tutorial/)
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-- [Python Best Practices](https://docs.python-guide.org/)
+- [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
 
 ## 📬 Contact
 
 Your Name - [@yourusername](https://twitter.com/yourusername)
 
-Project Link: [https://github.com/yourusername/fastapi-project-template](https://github.com/yourusername/fastapi-project-template)
+Project Link: [https://github.com/MichaelMight/fliberace-py](https://github.com/MichaelMight/fliberace-py)https://github.com/yourusername/fastapi-project-template)
