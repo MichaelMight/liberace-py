@@ -1,10 +1,13 @@
 [tool.poetry]
-name = "fastapi-project-template"
+name = "liberace-py"
 version = "0.1.0"
 description = "A production-ready FastAPI project template"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["MichaelMight"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "app" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -43,4 +46,6 @@ python_version = "3.11"
 strict = true
 ignore_missing_imports = true
 
+[tool.pytest.ini_options]
+pythonpath = "."
 
