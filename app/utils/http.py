@@ -1,7 +1,8 @@
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential
 from fastapi import Depends
-from ..core.config import Settings, get_settings
+from app.core.config import Settings, get_settings
+
 
 class HTTPClient:
     def __init__(self, settings: Settings = Depends(get_settings)):

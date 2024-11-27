@@ -5,12 +5,12 @@ from .config import get_settings
 
 settings = get_settings()
 
-# SQLite配置
+# SQLite configuration
 if settings.DATABASE_TYPE == "sqlite":
     engine = create_engine(
         settings.sqlalchemy_database_url,
         connect_args={"check_same_thread": False},
-        poolclass=StaticPool  # 添加这个以支持SQLite的测试
+        poolclass=StaticPool  # add this to test SQLite
     )
 else:
     engine = create_engine(settings.sqlalchemy_database_url)

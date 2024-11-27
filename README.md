@@ -1,4 +1,4 @@
-# FastAPI Project Template
+# liberace-py
 
 A production-ready FastAPI project template that helps you kickstart your Python web application with best practices.
 
@@ -161,7 +161,7 @@ The template supports various configuration options through environment variable
 
 ```env
 # Application
-APP_NAME=FastAPI Project
+APP_NAME=liberace-py
 DEBUG=True
 
 # Database
@@ -172,7 +172,7 @@ DATABASE_URL=        # required for postgresql
 LOG_LEVEL=INFO
 
 # API
-API_V1_STR=/api/v1
+API_V1_PREFIX=/api/v1
 ```
 
 ## 🤝 Contributing

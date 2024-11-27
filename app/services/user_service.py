@@ -1,12 +1,11 @@
-# app/services/user_service.py
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
-from ..models.user import User
-from ..schemas.user import UserCreate, UserUpdate
-from ..core.exceptions import NotFoundException
-from ..core.database import get_db
-from ..utils.security import get_password_hash
+from app.models.user import User
+from app.schemas.user import UserCreate, UserUpdate
+from app.core.exceptions import NotFoundException
+from app.core.database import get_db
+from app.utils.security import get_password_hash
 
 
 class UserService:
@@ -14,14 +13,14 @@ class UserService:
         self.db = db
 
     async def create_user(self, user_in: UserCreate) -> User:
-        now = datetime.utcnow()  # 创建具体的datetime对象
+        now = datetime.utcnow()
         user = User(
             username=user_in.username,
             hashed_password=get_password_hash(user_in.password),
             is_active=user_in.is_active,
             is_superuser=user_in.is_superuser,
-            created_at=now,  # 使用具体的datetime对象
-            updated_at=now  # 使用同一个datetime对象
+            created_at=now,
+            updated_at=now
         )
         self.db.add(user)
         self.db.commit()
@@ -35,7 +34,6 @@ class UserService:
         if "password" in update_data:
             update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
 
-        # 更新时间戳
         update_data["updated_at"] = datetime.utcnow()
 
         for field, value in update_data.items():

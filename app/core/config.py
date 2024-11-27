@@ -1,18 +1,21 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 from typing import Any, Dict, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "FastAPI Project"
-    DEBUG: bool = False
-    API_V1_STR: str = "/api/v1"
+    APP_NAME: str
+    DEBUG: bool
+    API_V1_PREFIX: str
 
     # Database
-    DATABASE_TYPE: str = "sqlite"  # "sqlite" or "postgresql"
+    DATABASE_TYPE: str
     DATABASE_URL: Optional[str] = None
     DATABASE_CONNECT_ARGS: Dict[str, Any] = {}
-    ENVIRONMENT: str =  "development"  # log setting
+    ENVIRONMENT: str   # log setting
 
     @property
     def sqlalchemy_database_url(self) -> str:
