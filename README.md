@@ -114,23 +114,46 @@ poetry run pytest --cov=app tests/
 
 ## 📝 Example Usage
 
+The template comes with a complete user management implementation as an example:
+
 ```python
-# app/api/v1/endpoints/example.py
-from fastapi import APIRouter, Depends
-from app.services.example import ExampleService
-from app.schemas.api_models import ExampleRequest, ExampleResponse
+# app/api/v1/endpoints/user.py
+from fastapi import APIRouter, Depends, status
+from app.services.user_service import UserService
+from app.schemas.user import UserCreate, UserInDB
 from app.utils.logger import logger
 
 router = APIRouter()
 
-@router.post("/example", response_model=ExampleResponse)
-async def handle_example(
-    request: ExampleRequest,
-    service: ExampleService = Depends(ExampleService)
-):
-    logger.info(f"Processing request: {request}")
-    return await service.process(request)
+@router.post("/users", response_model=UserInDB, status_code=status.HTTP_201_CREATED)
+async def create_user(
+    user_in: UserCreate,
+    service: UserService = Depends(UserService)
+) -> UserInDB:
+    """
+    Create new user with:
+    - Username validation
+    - Password hashing
+    - Automatic timestamp handling
+    - Database persistence
+    """
+    logger.info(f"Creating new user with username: {user_in.username}")
+    return await service.create_user(user_in)
 ```
+
+This example demonstrates key features of the template:
+- FastAPI dependency injection
+- Pydantic schemas for request/response validation
+- Service layer for business logic
+- Structured logging
+- Clean architecture patterns
+- Type hints and documentation
+
+To see the complete implementation, check:
+- `app/models/user.py` - SQLAlchemy model
+- `app/schemas/user.py` - Pydantic schemas
+- `app/services/user_service.py` - Business logic
+- `tests/test_user.py` - Unit tests
 
 ## 🔧 Configuration
 
@@ -174,6 +197,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📬 Contact
 
-Your Name - [@yourusername](https://twitter.com/yourusername)
+X: [@cx_pageup](https://x.com/cx_pageup)
 
-Project Link: [https://github.com/MichaelMight/fliberace-py](https://github.com/MichaelMight/fliberace-py)https://github.com/yourusername/fastapi-project-template)
+Project Link: [fliberace-py](https://github.com/MichaelMight/liberace-py)
+
